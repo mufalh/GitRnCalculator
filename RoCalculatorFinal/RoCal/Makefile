@@ -1,17 +1,16 @@
-cutgen: cutgen.c
-	gcc -D__LINUX__ cutgen.c -o cutgen
+all: Roman
 
-check: cutgen cutcheck.c cut-pass.o
-	gcc cutcheck.c cut-pass.o -o cutcheck
-	./cutcheck
+Roman: cutcheck.o cut-pass.o cutgen.o
+	gcc cutcheck.o cut-pass.o cutgen.o -o Roman
 
-cutcheck.c: cutgen cut-pass.o
-	./cutgen cut-pass.c -o cutcheck.c
+cutcheck.o: cutcheck.c
+	gcc -c cutcheck.c
 
 cut-pass.o: cut-pass.c
 	gcc -c cut-pass.c
 
-clean:
-	rm -f *.o *~ cutcheck* cutgen
+cutgen.o: cutgen.c
+	gcc -c cutgen.c
 
-all: check
+clean:
+	rm -rf *o Roman
