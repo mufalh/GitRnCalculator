@@ -279,7 +279,7 @@ void EmitUnitTesterBody()
 {
     int indent=0;
     TestItem *test;
-    Emit( "int main( int argc, char *argv[] )\n{" );
+    Emit( "int main1( int argc, char *argv[] )\n{" );
     Emit( "  if ( argc == 1 )" );
     Emit( "    cut_init( -1 );" );
     Emit( "  else cut_init( atoi( argv[1] ) );" );
@@ -322,58 +322,58 @@ void EmitCutCheck()
     EmitUnitTesterBody();
 }
 
-#if defined(_MSC_VER) // version tested for MS Visual C++ 6.0
-#include <io.h>
-
-void FileName(char *base)
-{
-   char *pos = strrchr(g_wildcards[g_index],'/');
-   char *pos2 = strrchr(g_wildcards[g_index],'\\');
-   if ( !pos || pos2 > pos )
-      pos = pos2;
-   
-   if ( pos )
-   {
-      size_t length = 1 + pos - g_wildcards[g_index];
-      strncpy(g_fileName,g_wildcards[g_index],length);
-      g_fileName[length] = 0;
-   }
-   else g_fileName[0] = 0;
-   strcat(g_fileName,base);
-}
-
-int LoadArgument(void)
-{
-   static struct _finddata_t fd;
-   static long handle = -1;
-   
-   if ( g_index>=g_count )
-      return 0;
-   
-   if ( -1 == handle )
-   {
-      handle = _findfirst(g_wildcards[g_index], &fd);
-      if ( -1 == handle ) // there MUST be at least a first match for each wildcard.
-         return 0;
-      FileName(fd.name);
-      return 1;
-   }
-   else if ( 0 == _findnext(handle,&fd) )
-   { // there's a 'next' filename
-      FileName(fd.name);
-      return 1;
-   }
-   else
-   { // this wasn't the first filename, and there isn't a next.
-      _findclose(handle);
-      handle = -1;
-      g_index++;
-      return LoadArgument();
-   }
-}
-
-#endif
-#if defined(__LINUX__)
+//#if defined(_MSC_VER) // version tested for MS Visual C++ 6.0
+//#include <io.h>
+//
+//void FileName(char *base)
+//{
+//   char *pos = strrchr(g_wildcards[g_index],'/');
+//   char *pos2 = strrchr(g_wildcards[g_index],'\\');
+//   if ( !pos || pos2 > pos )
+//      pos = pos2;
+//
+//   if ( pos )
+//   {
+//      size_t length = 1 + pos - g_wildcards[g_index];
+//      strncpy(g_fileName,g_wildcards[g_index],length);
+//      g_fileName[length] = 0;
+//   }
+//   else g_fileName[0] = 0;
+//   strcat(g_fileName,base);
+//}
+//
+//int LoadArgument(void)
+//{
+//   static struct _finddata_t fd;
+//   static long handle = -1;
+//
+//   if ( g_index>=g_count )
+//      return 0;
+//
+//   if ( -1 == handle )
+//   {
+//      handle = _findfirst(g_wildcards[g_index], &fd);
+//      if ( -1 == handle ) // there MUST be at least a first match for each wildcard.
+//         return 0;
+//      FileName(fd.name);
+//      return 1;
+//   }
+//   else if ( 0 == _findnext(handle,&fd) )
+//   { // there's a 'next' filename
+//      FileName(fd.name);
+//      return 1;
+//   }
+//   else
+//   { // this wasn't the first filename, and there isn't a next.
+//      _findclose(handle);
+//      handle = -1;
+//      g_index++;
+//      return LoadArgument();
+//   }
+//}
+//
+//#endif
+//#if defined(__LINUX__)
 
 void FileName( char *base )
 {
@@ -391,7 +391,7 @@ int LoadArgument( void )
    return 1;
 }
 
-#endif
+//#endif
 
 void StartArguments( int starting, int count, char *array[] )
 {
@@ -442,7 +442,7 @@ void EstablishOutputFile( int argc, char *argv[] )
    outfile = stdout;
 }
 
-int main( int argc,char *argv[] )
+int main1( int argc,char *argv[] )
 {
    char *filename;
 

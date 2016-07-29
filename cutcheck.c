@@ -63,7 +63,7 @@ static void print_string_as_error( char *filename, int lineNumber, char *string 
 
 static void print_integer_as_expected( int i )
 {
-  printf( "(signed) %d (unsigned) %u (hex) 0x%08lX", i, i, i );
+  printf( "(signed) %d (unsigned) %u (hex) 0x%08X", i, i, i );
 }
 
 static void print_integer( int i )
